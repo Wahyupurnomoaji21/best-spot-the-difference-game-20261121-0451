@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Temukan 7 Perbedaan — Senja, Taman &amp; Kota</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div class="brand">
+      <h1>Temukan <span class="seven">7</span> Perbedaan</h1>
+      <p class="tagline">Tiga tempat, dua puluh satu perbedaan tersembunyi. Seberapa tajam matamu?</p>
+    </div>
+    <div id="hud" aria-label="Status permainan">
+      <div class="hud-item"><span class="hud-label">Ronde</span><strong id="hudRound">1 / 3</strong></div>
+      <div class="hud-item found"><span class="hud-label">Ditemukan</span><strong id="hudFound">0 dari 7</strong></div>
+      <div class="hud-item"><span class="hud-label">Waktu</span><strong id="hudTime">00:00</strong></div>
+      <div class="hud-item"><span class="hud-label">Skor</span><strong id="hudScore">0</strong></div>
+      <button id="hintBtn" type="button" title="Petunjuk (H) — minus 50 poin">💡 Petunjuk <span id="hintLeft">(3)</span></button>
+      <button id="muteBtn" type="button" title="Suara (M)">🔊</button>
+      <button id="restartBtn" type="button" title="Ulangi ronde (R)">↻ Ulangi</button>
+    </div>
+  </header>
+
+  <div id="roundBanner"><span id="roundName">Ronde 1 — Senja di Ruang Tamu</span><span id="roundHint">Perhatikan jam, cangkir, dan si kucing…</span></div>
+
+  <main id="stage">
+    <section class="panel" id="panelLeft">
+      <div class="panel-tag">Gambar A</div>
+      <canvas id="canvasLeft" width="560" height="400" aria-label="Gambar kiri"></canvas>
+      <div class="panel-caption">Asli — pelajari baik-baik</div>
+    </section>
+    <div id="versus" aria-hidden="true">VS</div>
+    <section class="panel" id="panelRight">
+      <div class="panel-tag">Gambar B</div>
+      <canvas id="canvasRight" width="560" height="400" aria-label="Gambar kanan"></canvas>
+      <div class="panel-caption">Hampir sama — ada 7 yang berbeda</div>
+    </section>
+    <div id="cursor" hidden></div>
+
+    <div id="startScreen" class="overlay">
+      <div class="overlay-card">
+        <p class="over-kicker">PERMAINAN MENGAMATI</p>
+        <h2>Temukan <span class="seven">7</span> Perbedaan</h2>
+        <p class="over-text">Dua gambar nyaris identik berdampingan. Temukan <strong>7 perbedaan</strong> di setiap
+        ronde — warna yang berubah, benda yang hilang, atau yang bergeser sedikit. Tiga ronde:
+        ruang tamu saat senja, taman di pagi hari, dan jalanan kota di malam hari.</p>
+        <ul class="howto">
+          <li><b>🖱️ Mouse:</b> klik perbedaan pada gambar mana pun.</li>
+          <li><b>⌨️ Keyboard:</b> panah gerakkan bidikan, <b>Enter / Spasi</b> pilih, <b>H</b> petunjuk, <b>R</b> ulangi.</li>
+          <li><b>💡 Petunjuk:</b> 3× per ronde, masing-masing −50 poin.</li>
+          <li><b>⏱️ Waktu:</b> makin cepat menemukan semua, makin besar bonusnya.</li>
+        </ul>
+        <button id="playBtn" type="button" class="big-btn">▶ &nbsp;Mulai Bermain</button>
+        <p class="over-foot">Skor +100 per temuan · klik salah −10 · tanpa waktu habis, tapi jam terus berjalan</p>
+      </div>
+    </div>
+
+    <div id="roundScreen" class="overlay" hidden>
+      <div class="overlay-card">
+        <p class="over-kicker" id="roundClearKicker">RONDE SELESAI</p>
+        <h2 id="roundClearTitle">Ronde 1 Tuntas!</h2>
+        <p class="over-text" id="roundClearText">Semua 7 perbedaan ditemukan.</p>
+        <div class="stats">
+          <div><span>Waktu ronde</span><strong id="roundClearTime">00:00</strong></div>
+          <div><span>Bonus waktu</span><strong id="roundClearBonus">+0</strong></div>
+          <div><span>Skor total</span><strong id="roundClearScore">0</strong></div>
+        </div>
+        <button id="nextBtn" type="button" class="big-btn">Lanjut ke Ronde Berikutnya →</button>
+      </div>
+    </div>
+
+    <div id="winScreen" class="overlay" hidden>
+      <div class="overlay-card win">
+        <p class="over-kicker">🏆 SEMUA RONDE SELESAI</p>
+        <h2>Mata Elang!</h2>
+        <p class="over-text">Kamu menemukan <strong>21 dari 21 perbedaan</strong> di tiga tempat berbeda.
+        Tidak ada yang lolos dari pengamatanmu.</p>
+        <div class="stats">
+          <div><span>Total waktu</span><strong id="winTime">00:00</strong></div>
+          <div><span>Klik salah</span><strong id="winMiss">0</strong></div>
+          <div><span>Petunjuk dipakai</span><strong id="winHints">0</strong></div>
+          <div><span>Skor akhir</span><strong id="winScore">0</strong></div>
+        </div>
+        <p id="winGrade" class="grade">Peringkat: Pengamat Ulung</p>
+        <button id="againBtn" type="button" class="big-btn">↻ &nbsp;Main Lagi dari Awal</button>
+      </div>
+    </div>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <footer id="foot">
+    <span>🖱️ Klik perbedaan · ⌨️ Panah + Enter · <b>H</b> petunjuk · <b>R</b> ulangi · <b>M</b> suara</span>
+    <span id="footScene">Ronde 1 dari 3 — Senja di Ruang Tamu</span>
+  </footer>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
